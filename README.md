@@ -1,4 +1,4 @@
-<h1>Alura Midi</h1>
+<h1>Alura Fokus</h1>
 
 <h2>🔖 Sobre</h2>
 <p>Projeto desenvolvido no decorrer do curso de JavaScript manipulando elementos no DOM, realizado durante o projeto ONE(Oracle Next Education), da Oracle em parceria com a Alura. Nesse projeto recebemos o HTML e o CSS prontos, dessa maneira realizamos apenas o desenvolvimento do JavaScript</p>
