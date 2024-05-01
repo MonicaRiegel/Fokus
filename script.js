@@ -4,9 +4,10 @@ const focoBt = document.querySelector('.app__card-button--foco')
 const curtoBt = document.querySelector('.app__card-button--curto')
 const longoBt = document.querySelector('.app__card-button--longo')
 const iniciarBt = document.querySelector('#start-pause')
-
+const iniciarOuPausarBt = document.querySelector('#start-pause span')
 const time = document.querySelector('#timer')
 const banner = document.querySelector('.app__image')
+const icone = document.querySelector('.app__card-primary-butto-icon')
 const titulo = document.querySelector('.app__title')
 const botoes = document.querySelectorAll('.app__card-button')
 const musicaFocoInput = document.querySelector('#alternar-musica')
@@ -16,12 +17,7 @@ const audioPlay = new Audio('./sons/play.wav');
 const audioPausa = new Audio('./sons/pause.mp3');
 const audioTempoFinalizado = new Audio('./sons/beep.mp3')
 
-
-const duracaoFoco = 1500;
-const duracaoDescansoCurto = 300;
-const duracaoDescansoLongo = 900;
-
-let tempoDecorridoemSegondos = 5
+let tempoDecorridoemSegondos = 1500
 let intervaloId = null
 
 musicaFocoInput.addEventListener('change', () => {
@@ -33,21 +29,25 @@ musicaFocoInput.addEventListener('change', () => {
 })
 
 focoBt.addEventListener('click', () => {
+    tempoDecorridoemSegondos = 1500
     alterarContexto('foco')
     focoBt.classList.add('active')
 })
 
 curtoBt.addEventListener('click', () => {
+    tempoDecorridoemSegondos = 300
    alterarContexto('descanso-curto')
    curtoBt.classList.add('active')
 })
 
 longoBt.addEventListener('click', () => {
+    tempoDecorridoemSegondos = 900
     alterarContexto('descanso-longo')
     longoBt.classList.add('active')
 })
 
 function alterarContexto(contexto) {
+    mostrarTempo()
     botoes.forEach(function(contexto){
         contexto.classList.remove('active')
     })
@@ -78,10 +78,10 @@ const contagemRegressiva = () => {
     if(tempoDecorridoemSegondos <= 0){
         audioTempoFinalizado.play()
         zerar()
-        alert('Tempo finalizado!')
         return
     }
     tempoDecorridoemSegondos -= 1
+    mostrarTempo()
 }
 
 iniciarBt.addEventListener('click', iniciarOuPausar)
@@ -94,10 +94,21 @@ function iniciarOuPausar() {
     }
     audioPlay.play()
     intervaloId = setInterval(contagemRegressiva, 1000) /*1000 equivqle a 1 segundo*/
-
+    iniciarOuPausarBt.textContent = "Pausar"
+    icone.setAttribute('src', './imagens/pause.png')
 }
 
 function zerar() {
     clearInterval(intervaloId)
+    iniciarOuPausarBt.textContent = "Começar"
+    icone.setAttribute('src', './imagens/play_arrow.png')
     intervaloId = null
 }
+
+function mostrarTempo() {
+    const tempo = new Date(tempoDecorridoemSegondos * 1000)
+    const tempoFormatado = tempo.toLocaleTimeString('pt-Br', {minute:'2-digit', second: '2-digit'})
+    time.innerHTML = `${tempoFormatado}`
+}
+
+mostrarTempo()
